@@ -48,7 +48,8 @@ protected:
 		m_burgerNames[8],
 		m_chickenNames[6],
 		m_dessertNames[8],
-		m_drinkNames[8];
+		m_drinkNames[8],
+		m_helpImagePaths[13];
 	int m_screenType,
 		m_time,
 		m_score,
@@ -64,7 +65,8 @@ protected:
 		m_paymentType,
 		m_curDragPayment,
 		m_missionPaymentType,
-		m_missionToGo;
+		m_missionToGo,
+		m_helpPointer;
 	bool m_askSet,
 		m_showPaymentRects,
 		m_paymentDrag,

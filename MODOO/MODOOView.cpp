@@ -73,6 +73,14 @@ CMODOOView::CMODOOView() noexcept
 	m_curDragPayment = -1;
 	m_missionPaymentType = -1;
 	m_isFinish = false;
+	m_helpPointer = 0;
+
+	/* 도움말 화면 이미지 패스 할당 */
+	CString temp;
+	for (int i = 0; i < 13; i++) {
+		temp.Format(_T("%d"), i + 1);
+		m_helpImagePaths[i] = _T("./res/screen_help_") + temp + _T(".png");
+	}
 
 	/* 메뉴 할당 */
 	int burgerPrices[8] = {4100, 4100, 4100, 3300, 7500, 6000, 2900, 6000 };
@@ -188,6 +196,26 @@ void CMODOOView::OnDraw(CDC* pDC)
 		case SCR_MENU:
 			scr_menu.SetRectsPosition(m_window_pt);
 			printBackgroundImageToDC(pDC, scr_menu.GetPath(), m_window_pt);
+			break;
+		case SCR_HELPS:
+			m_returnToHome = CRect(
+				int(m_window_pt.x * 0.834),
+				int(m_window_pt.y * 0.046),
+				int(m_window_pt.x * 0.834) + int(m_window_pt.x * 0.136),
+				int(m_window_pt.y * 0.046) + int(m_window_pt.y * 0.067)
+			);
+			if (m_helpPointer == 12) {
+				m_replay = CRect(
+					int(m_window_pt.x * 0.834),
+					int(m_window_pt.y * 0.117),
+					int(m_window_pt.x * 0.834) + int(m_window_pt.x * 0.136),
+					int(m_window_pt.y * 0.117) + int(m_window_pt.y * 0.067)
+				);
+				printBackgroundImageToDC(pDC, m_helpImagePaths[12], m_window_pt);
+			}
+			else {
+				printBackgroundImageToDC(pDC, m_helpImagePaths[m_helpPointer], m_window_pt);
+			}
 			break;
 		case SCR_BURGER:
 			scr_burger.SetRectsPosition(m_window_pt);
@@ -555,7 +583,7 @@ bool  CMODOOView::printMissionInfoToDC(CDC* pDC, ScreenObject thisScr) {
 	pDC->DrawText(m_scoreStr, thisScr.rects[1], DT_CENTER);
 	
 	CFont font, *oldFont;
-	font.CreatePointFont(64, _T("맑은고딕"));
+	font.CreatePointFont(72, _T("맑은고딕"));
 	oldFont = pDC->SelectObject(&font);
 
 	pDC->DrawText(m_missions[0], thisScr.rects[2], DT_LEFT | DT_NOCLIP);
@@ -666,15 +694,33 @@ void CMODOOView::OnLButtonDown(UINT nFlags, CPoint point)
 	/* 화면별 Rectangle 클릭 이벤트 제어 */
 	switch (m_screenType) {
 	case SCR_MENU:
-		if (scr_menu.rects[1].PtInRect(point)) {
+		if (scr_menu.rects[0].PtInRect(point)) {
+			m_screenType = SCR_HELPS;
+			m_helpPointer = 0;
+		}
+		else if (scr_menu.rects[1].PtInRect(point)) {
 			m_screenType = SCR_BURGER;
 			m_time = PLAY_TIME; // 게임 시간 1분
 			setMission();
 			SetTimer(0, 1000, NULL);
 		} 
-		// 추후 게임 방법 쪽 화면으로 연결 시켜줘야함 else
 		break;
+	case SCR_HELPS:
+		if (m_helpPointer < 12) {
+			m_helpPointer++;
+		}
 
+		if (m_returnToHome.PtInRect(point)) {
+			m_screenType = SCR_MENU;
+			m_helpPointer = 0;
+			m_returnToHome = CRect();
+		}
+		else if (m_replay.PtInRect(point)) {
+			m_helpPointer = 0;
+			m_replay = CRect();
+		}
+		
+		break;
 	case SCR_BURGER: /* 버거 메뉴 */
 		if (m_askSet) {
 			if (m_onlyMenu.PtInRect(point)) {

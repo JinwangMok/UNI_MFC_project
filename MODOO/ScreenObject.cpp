@@ -40,7 +40,7 @@ void ScreenObject::SetObjectByType(int screenType) {
 	case SCR_PAYMENT_2:
 		this->imagePath = _T("./res/screen_payment_2.png");
 		rects = new CRect[30];
-		break;
+		break; 
 	default:
 		break;
 	}
@@ -49,6 +49,10 @@ void ScreenObject::SetObjectByType(int screenType) {
 CString ScreenObject::GetPath() {
 
 	return this->imagePath;
+}
+
+void ScreenObject::SetPath(CString imagePath) {
+	this->imagePath = imagePath;
 }
 
 void ScreenObject::SetRectsPosition(CPoint window_pt) {
@@ -348,22 +352,5 @@ void ScreenObject::SetRectsPosition(CPoint window_pt) {
 			}
 		}
 		
-	}
-	
-	//switch (this->screenType) {
-	//case SCR_MENU:
-	//	
-	//	break;
-	//case SCR_BURGER:
-	//	
-	//	break;
-	//case SCR_CHICKEN:
-	//	break;
-	//case SCR_DESSERT:
-	//	break;
-	//case SCR_DRINK:
-	//	break;
-	//default:
-	//	break;
-	//}
+	}	
 }

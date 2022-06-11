@@ -8,6 +8,7 @@
 #define SCR_SET_DRINK 1007
 #define SCR_PAYMENT_1 1008
 #define SCR_PAYMENT_2 1009
+#define SCR_HELPS 1010
 
 class ScreenObject
 {
@@ -18,6 +19,7 @@ protected:
 public:
 	CRect* rects;
 	CString GetPath();
+	void SetPath(CString imagePath);
 	void SetObjectByType(int screenType);
 	void SetRectsPosition(CPoint window_pt);
 };
