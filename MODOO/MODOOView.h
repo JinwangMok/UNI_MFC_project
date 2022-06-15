@@ -1,33 +1,26 @@
-﻿
-// MODOOView.h: CMODOOView 클래스의 인터페이스
-//
-#pragma once
+﻿#pragma once
 #include "ScreenObject.h"
 #define PLAY_TIME 100
 
 class CMODOOView : public CView
 {
-protected: // serialization에서만 만들어집니다.
+protected:
 	CMODOOView() noexcept;
 	DECLARE_DYNCREATE(CMODOOView)
 
-// 특성입니다.
 public:
 	CMODOODoc* GetDocument() const;
 
-// 작업입니다.
 public:
 
-// 재정의입니다.
 public:
-	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.
+	virtual void OnDraw(CDC* pDC);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 
-// 구현입니다.
 public:
 	virtual ~CMODOOView();
 #ifdef _DEBUG
@@ -36,15 +29,14 @@ public:
 #endif
 
 protected:
-	/* Author:목진왕 */
-	CPoint m_window_pt, m_paymentDrag_pt;		// 윈도우 가로, 세로 길이를 저장하기 위한 CPoint 변수
-	CDC ImageDC;			// 이미지를 pDC에 등록하기 위한 디바이스 컨텍스트 변수
-	CString m_missions[4],	// 미션 문자열
-		m_selectedMenus[3],	// 선택된 메뉴 문자열
-		m_timeStr,				// 제한 시간 문자열
-		m_scoreStr,			// 점수 문자열
-		m_selectedNumStr,	// 주문내역(개) 문자열
-		m_totalPriceStr,	// 총 주문 금액 문자열
+	CPoint m_window_pt, m_paymentDrag_pt;
+	CDC ImageDC;
+	CString m_missions[4],
+		m_selectedMenus[3],
+		m_timeStr,
+		m_scoreStr,
+		m_selectedNumStr,
+		m_totalPriceStr,
 		m_burgerNames[8],
 		m_chickenNames[6],
 		m_dessertNames[8],
@@ -93,7 +85,6 @@ protected:
 	bool printMissionInfoToDC(CDC* pDC, ScreenObject thisScr);
 	bool setMission();
 
-// 생성된 메시지 맵 함수
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
@@ -104,7 +95,7 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 };
 
-#ifndef _DEBUG  // MODOOView.cpp의 디버그 버전
+#ifndef _DEBUG
 inline CMODOODoc* CMODOOView::GetDocument() const
    { return reinterpret_cast<CMODOODoc*>(m_pDocument); }
 #endif
